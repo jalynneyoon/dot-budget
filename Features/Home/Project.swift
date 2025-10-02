@@ -2,6 +2,9 @@ import ProjectDescription
 
 let project = Project(
     name: "Home",
+    packages: [
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", .upToNextMajor(from: "1.11.0"))
+    ],
     targets: [
         .target(
             name: "Home",
@@ -18,7 +21,14 @@ let project = Project(
             ),
             sources: ["Home/Sources/**"],
             resources: ["Home/Resources/**"],
-            dependencies: []
+            dependencies: [
+                .package(product: "ComposableArchitecture"),
+                .package(product: "Dependencies"),
+                .package(product: "CasePaths"),
+                .package(product: "Perception"),
+                .project(target: "Domain", path: "../../Domain"),
+                
+            ]
         ),
         .target(
             name: "HomeTests",
@@ -27,7 +37,6 @@ let project = Project(
             bundleId: "io.tuist.HomeTests",
             infoPlist: .default,
             sources: ["Home/Tests/**"],
-            resources: [],
             dependencies: [.target(name: "Home")]
         ),
     ]

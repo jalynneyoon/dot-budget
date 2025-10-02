@@ -9,13 +9,13 @@ import Foundation
 import SwiftData
 
 @Model
-final class BudgetEntity {
-    @Attribute(.unique) var id: UUID
+public final class BudgetEntity {
+    @Attribute(.unique) public var id: UUID
     var monthKey: Int
     var category: CategoryEntity
     var amount: Int
 
-    init(
+    public init(
         id: UUID = UUID(),
         monthKey: Int,
         category: CategoryEntity,

@@ -9,8 +9,8 @@ import Foundation
 import SwiftData
 
 @Model
-final class ExpenseEntity {
-    @Attribute(.unique) var id: UUID
+public final class ExpenseEntity {
+    @Attribute(.unique) public var id: UUID
     var date: Date
     var amount: Int
     var category: CategoryEntity?
@@ -20,7 +20,7 @@ final class ExpenseEntity {
     var createdAt: Date
     var updatedAt: Date
 
-    init(
+    public init(
         id: UUID = UUID(),
         date: Date,
         amount: Int,

@@ -9,6 +9,38 @@
 import Foundation
 import Domain
 
+// MARK: - To Entity
+
+extension Expense {
+    func toEntity() -> ExpenseEntity {
+        return ExpenseEntity(
+            id: self.id,
+            date: self.date,
+            amount: self.amount,
+            category: self.category?.toEntity(),
+            memo: self.memo,
+            dayKey: self.dayKey,
+            monthKey: self.monthKey,
+            createdAt: self.createdAt,
+            updatedAt: self.updatedAt
+        )
+    }
+}
+
+extension Domain.Category {
+    func toEntity() -> CategoryEntity {
+        return CategoryEntity(
+            id: self.id,
+            name: self.name,
+            symbol: self.symbol,
+            isDefault: self.isDefault
+        )
+    }
+}
+
+
+// MARK: - To Domain
+
 // MARK: - Category
 
 extension CategoryEntity {

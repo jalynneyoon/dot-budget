@@ -6,8 +6,8 @@ let project = Project(
         .target(
             name: "Data",
             destinations: .iOS,
-            product: .app,
-            bundleId: "io.tuist.Data",
+            product: .framework,
+            bundleId: "com.jalynneyoon.Data",
             infoPlist: .extendingDefault(
                 with: [
                     "UILaunchScreen": [

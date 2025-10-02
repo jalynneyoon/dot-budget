@@ -1,8 +1,10 @@
 import SwiftUI
 import Home
 import Statistics
+import ComposableArchitecture
 
 struct ContentView: View {
+
     var body: some View {
         TabView {
             HomeView()
@@ -19,5 +21,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView(
+    )
 }

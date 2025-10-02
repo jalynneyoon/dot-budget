@@ -9,12 +9,12 @@ import Foundation
 import SwiftData
 
 @Model
-final class BadgeUnlockEntity {
-    @Attribute(.unique) var id: UUID
+public final class BadgeUnlockEntity {
+    @Attribute(.unique) public var id: UUID
     var typeRaw: String
     var unlockedAt: Date
 
-    init(
+    public init(
         id: UUID = UUID(),
         typeRaw: String,
         unlockedAt: Date

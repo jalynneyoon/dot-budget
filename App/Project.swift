@@ -21,6 +21,12 @@ let project = Project(
             dependencies: [
                 .project(target: "Home", path: "../Features/Home"),
                 .project(target: "Statistics", path: "../Features/Statistics"),
+                .project(target: "Data", path: "../Data"),
+                .project(target: "Domain", path: "../Domain"),
+                .package(product: "ComposableArchitecture"),
+                .package(product: "Dependencies"),
+                .package(product: "CasePaths"),
+                .package(product: "Perception"),
             ]
         ),
         .target(

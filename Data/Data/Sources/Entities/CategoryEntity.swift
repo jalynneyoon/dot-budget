@@ -9,13 +9,13 @@ import Foundation
 import SwiftData
 
 @Model
-final class CategoryEntity {
-    @Attribute(.unique) var id: UUID
+public final class CategoryEntity {
+    @Attribute(.unique) public var id: UUID
     var name: String
     var symbol: String
     var isDefault: Bool
     
-    init(id: UUID = UUID(), name: String, symbol: String, isDefault: Bool = false) {
+    public init(id: UUID = UUID(), name: String, symbol: String, isDefault: Bool = false) {
         self.id = id
         self.name = name
         self.symbol = symbol
@@ -24,13 +24,13 @@ final class CategoryEntity {
 }
 
 @Model
-final class AppSettingsEntity {
-    @Attribute(.unique) var id: UUID
+public final class AppSettingsEntity {
+    @Attribute(.unique) public var id: UUID
     var notificationsEnabled: Bool
     var reminderMinutesFromMidnight: Int
     var currencyCode: String
 
-    init(
+    public init(
         id: UUID = UUID(),
         notificationsEnabled: Bool,
         reminderMinutesFromMidnight: Int,
