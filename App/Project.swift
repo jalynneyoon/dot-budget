@@ -23,10 +23,7 @@ let project = Project(
                 .project(target: "Statistics", path: "../Features/Statistics"),
                 .project(target: "Data", path: "../Data"),
                 .project(target: "Domain", path: "../Domain"),
-                .package(product: "ComposableArchitecture"),
-                .package(product: "Dependencies"),
-                .package(product: "CasePaths"),
-                .package(product: "Perception"),
+                .project(target: "DI", path: "../DI"),
             ]
         ),
         .target(

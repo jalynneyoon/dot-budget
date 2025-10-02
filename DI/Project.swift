@@ -1,35 +1,34 @@
 import ProjectDescription
 
 let project = Project(
-    name: "Home",
+    name: "DI",
     packages: [
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture", .upToNextMajor(from: "1.11.0"))
     ],
     targets: [
         .target(
-            name: "Home",
+            name: "DI",
             destinations: .iOS,
             product: .framework,
-            bundleId: "com.jalynneyoon.Home",
+            bundleId: "com.jalynneyoon.DI",
             infoPlist: .default,
-            sources: ["Home/Sources/**"],
-            resources: ["Home/Resources/**"],
+            sources: ["DI/Sources/**"],
             dependencies: [
+                .project(target: "Domain", path: "../Domain"),
                 .package(product: "ComposableArchitecture"),
                 .package(product: "Dependencies"),
                 .package(product: "CasePaths"),
                 .package(product: "Perception"),
-                .project(target: "Domain", path: "../../Domain"),
             ]
         ),
         .target(
-            name: "HomeTests",
+            name: "DITests",
             destinations: .iOS,
             product: .unitTests,
-            bundleId: "io.tuist.HomeTests",
+            bundleId: "com.jalynneyoon.DITests",
             infoPlist: .default,
-            sources: ["Home/Tests/**"],
-            dependencies: [.target(name: "Home")]
+            sources: ["DI/Tests/**"],
+            dependencies: [.target(name: "DI")]
         ),
     ]
 )

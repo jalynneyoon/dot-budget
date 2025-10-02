@@ -3,6 +3,7 @@ import SwiftData
 import ComposableArchitecture
 import Domain
 import Data
+import DI
 import Dependencies
 import Home
 

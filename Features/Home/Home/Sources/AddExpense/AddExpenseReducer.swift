@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import Foundation
 import Domain
+import DI
 
 @Reducer
 struct AddExpenseReducer {
