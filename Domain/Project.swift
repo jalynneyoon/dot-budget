@@ -1,0 +1,34 @@
+import ProjectDescription
+
+let project = Project(
+    name: "Domain",
+    targets: [
+        .target(
+            name: "Domain",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "com.jalynneyoon.Domain",
+            infoPlist: .extendingDefault(
+                with: [
+                    "UILaunchScreen": [
+                        "UIColorName": "",
+                        "UIImageName": "",
+                    ],
+                ]
+            ),
+            sources: ["Domain/Sources/**"],
+            resources: ["Domain/Resources/**"],
+            dependencies: []
+        ),
+        .target(
+            name: "DomainTests",
+            destinations: .iOS,
+            product: .unitTests,
+            bundleId: "com.jalynneyoon.DomainTests",
+            infoPlist: .default,
+            sources: ["Domain/Tests/**"],
+            resources: [],
+            dependencies: [.target(name: "Domain")]
+        ),
+    ]
+)
