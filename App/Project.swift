@@ -26,13 +26,7 @@ let project = Project(
                 .project(target: "Statistics", path: "../Features/Statistics"),
                 .project(target: "Data", path: "../Data"),
                 .project(target: "DI", path: "../DI"),
-                .external(name: "ComposableArchitecture")
             ],
-            settings: .settings(
-                base: [
-                    "DEVELOPMENT_TEAM": "6GM235HJ3Z"
-                ]
-            ),
         ),
         .target(
             name: "AppTests",
