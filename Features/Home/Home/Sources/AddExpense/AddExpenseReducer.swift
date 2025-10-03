@@ -1,14 +1,13 @@
 import ComposableArchitecture
 import Foundation
 import Domain
-import DI
 
 @Reducer
 struct AddExpenseReducer {
     @ObservableState
     struct State: Equatable {
         var amount: String = ""
-        var selectedCategory: Domain.Category? 
+        var selectedCategory: Domain.Category?
         var expenseDate: Date = .now
         var memo: String = ""
         var categories: [Domain.Category] = []
