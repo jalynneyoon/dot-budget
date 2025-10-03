@@ -7,7 +7,7 @@ struct AddExpenseReducer {
     @ObservableState
     struct State: Equatable {
         var amount: String = ""
-        var selectedCategory: Domain.Category?
+        var selectedCategory: Domain.Category? 
         var expenseDate: Date = .now
         var memo: String = ""
         var categories: [Domain.Category] = []
@@ -21,6 +21,7 @@ struct AddExpenseReducer {
         
         enum Delegate {
             case expenseSaved
+            case cancelTapped
         }
     }
 
@@ -53,7 +54,10 @@ struct AddExpenseReducer {
                     await send(.delegate(.expenseSaved))
                 }
 
-            case .binding, .cancelButtonTapped, .delegate:
+            case .cancelButtonTapped:
+                return .send(.delegate(.cancelTapped))
+
+            case .binding, .delegate:
                 return .none
             }
         }

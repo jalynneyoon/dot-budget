@@ -2,6 +2,9 @@ import ProjectDescription
 
 let project = Project(
     name: "App",
+    packages: [
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", .upToNextMajor(from: "1.11.0"))
+    ],
     targets: [
         .target(
             name: "App",
@@ -23,13 +26,19 @@ let project = Project(
                 .project(target: "Statistics", path: "../Features/Statistics"),
                 .project(target: "Data", path: "../Data"),
                 .project(target: "DI", path: "../DI"),
-            ]
+                .external(name: "ComposableArchitecture")
+            ],
+            settings: .settings(
+                base: [
+                    "DEVELOPMENT_TEAM": "6GM235HJ3Z"
+                ]
+            ),
         ),
         .target(
             name: "AppTests",
             destinations: .iOS,
             product: .unitTests,
-            bundleId: "io.tuist.AppTests",
+            bundleId: "com.jalynneyoon.AppTests",
             infoPlist: .default,
             sources: ["App/Tests/**"],
             resources: [],

@@ -15,20 +15,12 @@ let project = Project(
             sources: ["DI/Sources/**"],
             dependencies: [
                 .project(target: "Domain", path: "../Domain"),
+                .project(target: "Data", path: "../Data"),
                 .package(product: "ComposableArchitecture"),
                 .package(product: "Dependencies"),
                 .package(product: "CasePaths"),
                 .package(product: "Perception"),
             ]
-        ),
-        .target(
-            name: "DITests",
-            destinations: .iOS,
-            product: .unitTests,
-            bundleId: "com.jalynneyoon.DITests",
-            infoPlist: .default,
-            sources: ["DI/Tests/**"],
-            dependencies: [.target(name: "DI")]
         ),
     ]
 )

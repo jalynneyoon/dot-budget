@@ -26,7 +26,7 @@ let project = Project(
             name: "HomeTests",
             destinations: .iOS,
             product: .unitTests,
-            bundleId: "io.tuist.HomeTests",
+            bundleId: "com.jalynneyoon.HomeTests",
             infoPlist: .default,
             sources: ["Home/Tests/**"],
             dependencies: [.target(name: "Home")]

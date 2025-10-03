@@ -15,32 +15,44 @@ public struct HomeView: View {
     }
 
     public var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            // Main content of the home screen
-            VStack {
-                Text("내역이 없습니다.") // Placeholder
-            }
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            ZStack(alignment: .bottomTrailing) {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        SummaryCardView(
+                            store: self.store.scope(state: \.summaryCard, action: \.summaryCard)
+                        )
+                        .padding(.horizontal)
+                        
+                        HeatmapView(
+                            store: self.store.scope(state: \.heatmap, action: \.heatmap)
+                        )
+                        .padding(.vertical)
+                        
+                        Text("내역이 없습니다.")
+                            .padding()
+                    }
+                }
 
-            // Floating Action Button
-            Button(action: { 
-                store.send(.fabButtonTapped)
-            }) {
-                Image(systemName: "plus")
-                    .font(.title.weight(.semibold))
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .clipShape(Circle())
-                    .shadow(radius: 4, x: 0, y: 4)
+                Button(action: { 
+                    viewStore.send(.fabButtonTapped)
+                }) {
+                    Image(systemName: "plus")
+                        .font(.title.weight(.semibold))
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .clipShape(Circle())
+                        .shadow(radius: 4, x: 0, y: 4)
+                }
+                .padding()
             }
-            .padding()
-        }
-        .sheet(store: self.store.scope(state: \.$addExpense, action: \.addExpense)) { store in
-            AddExpenseView(store: store)
+            .sheet(store: self.store.scope(state: \.$addExpense, action: \.addExpense)) { store in
+                AddExpenseView(store: store)
+            }
         }
     }
 }
-
 
 #Preview {
     HomeView(

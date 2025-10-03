@@ -7,7 +7,7 @@
 
 import Foundation
 import Domain
-import Dependencies
+import ComposableArchitecture
 import Data
 import SwiftData
 
@@ -18,8 +18,13 @@ public enum DI {
         
         let repo = DefaultExpenseRepository(modelContext: modelContext)
         let addExpense = AddExpenseUseCase(expenseRepository: repo)
+        let getMonthlySummary = GetMonthlySummaryUseCase(expenseRepository: repo)
+        let getHeatmapData = GetHeatmapDataUseCase(expenseRepository: repo)
+        
         withDependencies {
             $0.addExpenseUseCase = .init(execute: addExpense.execute)
+            $0.getMonthlySummaryUseCase = .init(execute: getMonthlySummary.execute)
+            $0.getHeatmapDataUseCase = .init(execute: getHeatmapData.execute)
         } operation: {}
     }
 }

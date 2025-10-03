@@ -1,8 +1,10 @@
 import SwiftUI
 import SwiftData
+import ComposableArchitecture
+
+import Domain
 import Data
 import DI
-import Home
 
 @main
 struct DotBudgetApp: App {
@@ -12,7 +14,9 @@ struct DotBudgetApp: App {
         do {
             container = try ModelContainer(for: ExpenseEntity.self, CategoryEntity.self, BudgetEntity.self, BadgeUnlockEntity.self)
             
+            // Bootstrap all live dependencies via DI module
             DI.bootstrap(container: container)
+            
         } catch {
             fatalError("Failed to initialize ModelContainer: \(error)")
         }

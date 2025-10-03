@@ -26,7 +26,7 @@ let project = Project(
             name: "DataTests",
             destinations: .iOS,
             product: .unitTests,
-            bundleId: "io.tuist.DataTests",
+            bundleId: "com.jalynneyoon.DataTests",
             infoPlist: .default,
             sources: ["Data/Tests/**"],
             resources: [],
