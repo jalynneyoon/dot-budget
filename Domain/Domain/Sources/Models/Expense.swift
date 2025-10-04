@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Expense {
+public struct Expense: Sendable {
     public let id: UUID
     public let date: Date
     public let amount: Int

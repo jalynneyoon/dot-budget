@@ -8,6 +8,8 @@ let workspace = Workspace(
         "./Features/**",
         "./Core/**",
         "./Domain/**",
-        "./Data/**"
+        "./Data/**",
+        "./DI",
+        "./Shared/**",
     ]
 )

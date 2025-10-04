@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import Foundation
 import Domain
+import Shared
 
 @Reducer
 struct AddExpenseReducer {
@@ -32,7 +33,7 @@ struct AddExpenseReducer {
         Reduce { state, action in
             switch action {
             case .saveButtonTapped:
-                guard let amount = Int(state.amount), let category = state.selectedCategory else {
+                guard let amount = Int(state.amount) else {
                     // TODO: Show validation error to user
                     return .none
                 }
@@ -41,10 +42,10 @@ struct AddExpenseReducer {
                     id: UUID(),
                     date: state.expenseDate,
                     amount: amount,
-                    category: category,
+                    category: Category(id: UUID(), name: "food", symbol: "dd", isDefault: false),
                     memo: state.memo,
-                    dayKey: 0, // TODO: Calculate keys
-                    monthKey: 0, // TODO: Calculate keys
+                    dayKey: DateKeys.dayKey(from: Date()),
+                    monthKey: DateKeys.monthKey(from: Date()),
                     createdAt: .now,
                     updatedAt: .now
                 )

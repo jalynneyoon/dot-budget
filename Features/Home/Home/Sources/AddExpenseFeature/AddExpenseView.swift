@@ -11,6 +11,7 @@ struct AddExpenseView: View {
                 Section(header: Text("지출 정보")) {
                     TextField("금액", text: $store.amount)
                         .keyboardType(.numberPad)
+                        .autocorrectionDisabled()
                     
                     Picker("카테고리", selection: $store.selectedCategory) {
                         Text("미선택").tag(nil as Domain.Category?)

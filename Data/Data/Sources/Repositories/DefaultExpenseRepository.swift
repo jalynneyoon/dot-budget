@@ -9,6 +9,7 @@
 import Foundation
 import Domain
 import SwiftData
+import Shared
 
 public final class DefaultExpenseRepository: ExpenseRepository {
     private let modelContext: ModelContext

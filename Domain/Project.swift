@@ -26,6 +26,7 @@ let project = Project(
                 .package(product: "Dependencies"),
                 .package(product: "CasePaths"),
                 .package(product: "Perception"),
+                .project(target: "Shared", path: "../Shared"),
             ]
         ),
         .target(

@@ -1,6 +1,7 @@
-
 import SwiftUI
 import ComposableArchitecture
+import Domain
+import Dependencies
 
 struct SummaryCardView: View {
     @Bindable var store: StoreOf<SummaryCardReducer>

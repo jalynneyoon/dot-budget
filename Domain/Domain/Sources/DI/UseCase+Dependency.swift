@@ -11,11 +11,11 @@ import ComposableArchitecture
 
 // MARK: - AddExpenseUseCase Dependency
 public struct AddExpenseUseCaseDependency {
-    public init(execute: @Sendable @escaping (Expense) async throws -> Void) {
+    public init(execute: @escaping (Expense) async throws -> Void) {
         self.execute = execute
     }
     
-    public var execute: @Sendable (Expense) async throws -> Void
+    public var execute: (Expense) async throws -> Void
 }
 
 extension AddExpenseUseCaseDependency: DependencyKey {
@@ -45,11 +45,11 @@ public extension DependencyValues {
 
 // MARK: - GetMonthlySummaryUseCase Dependency
 public struct GetMonthlySummaryUseCaseDependency {
-    public init(execute: @Sendable @escaping (Date) async throws -> MonthlySummary) {
+    public init(execute: @escaping (Date) async throws -> MonthlySummary) {
         self.execute = execute
     }
     
-    public var execute: @Sendable (Date) async throws -> MonthlySummary
+    public var execute: (Date) async throws -> MonthlySummary
 }
 
 extension GetMonthlySummaryUseCaseDependency: DependencyKey {
@@ -79,11 +79,11 @@ public extension DependencyValues {
 
 // MARK: - GetHeatmapDataUseCase Dependency
 public struct GetHeatmapDataUseCaseDependency {
-    public init(execute: @Sendable @escaping (Date) async throws -> [Date: Int]) {
+    public init(execute: @escaping (Date) async throws -> [Date: Int]) {
         self.execute = execute
     }
     
-    public var execute: @Sendable (Date) async throws -> [Date: Int]
+    public var execute: (Date) async throws -> [Date: Int]
 }
 
 extension GetHeatmapDataUseCaseDependency: DependencyKey {

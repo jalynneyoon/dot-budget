@@ -42,16 +42,3 @@ public final class AppSettingsEntity {
         self.currencyCode = currencyCode
     }
 }
-
-
-/// 키 유틸(집계 최적화)
-enum DateKeys {
-    static func dayKey(from date: Date, calendar: Calendar = .current) -> Int {
-        let comps = calendar.dateComponents([.year, .month, .day], from: date)
-        return (comps.year! * 10000) + (comps.month! * 100) + comps.day!
-    }
-    static func monthKey(from date: Date, calendar: Calendar = .current) -> Int {
-        let comps = calendar.dateComponents([.year, .month], from: date)
-        return (comps.year! * 100) + comps.month!
-    }
-}
