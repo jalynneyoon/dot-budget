@@ -73,11 +73,29 @@ public struct HomeView: View {
     let addExpenseUseCase = AddExpenseUseCase(expenseRepository: mockRepo)
     let getMonthlySummaryUseCase = GetMonthlySummaryUseCase(expenseRepository: mockRepo)
     let getHeatmapDataUseCase = GetHeatmapDataUseCase(expenseRepository: mockRepo)
+    
+    let mockCategoryRepo = MockCategoryRepository(
+        initialCategories: [
+            Category(id: UUID(), name: "식비", symbol: "fork.knife", isDefault: true),
+            Category(id: UUID(), name: "교통", symbol: "car", isDefault: true),
+            Category(id: UUID(), name: "생활", symbol: "house", isDefault: true),
+            Category(id: UUID(), name: "문화", symbol: "music.note", isDefault: true),
+            Category(id: UUID(), name: "기타", symbol: "ellipsis", isDefault: true)
+        ]
+    )
+    
+    let getCategories = GetCategoriesUseCase(categoryRepository: mockCategoryRepo)
+    let addCategory = AddCategoryUseCase(categoryRepository: mockCategoryRepo)
+    let deleteCategory = DeleteCategoryUseCase(categoryRepository: mockCategoryRepo)
+     
 
     withDependencies {
         $0.addExpenseUseCase = .init(execute: addExpenseUseCase.execute)
         $0.getMonthlySummaryUseCase = .init(execute: getMonthlySummaryUseCase.execute)
         $0.getHeatmapDataUseCase = .init(execute: getHeatmapDataUseCase.execute)
+        $0.getCategoriesUseCase = .init(execute: getCategories.execute)
+        $0.addCategoryUseCase = .init(execute: addCategory.execute)
+        $0.deleteCategoryUseCase = .init(execute: deleteCategory.execute)
     } operation: {
         HomeView(
             store: Store(initialState: HomeReducer.State()) {

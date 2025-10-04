@@ -1,3 +1,4 @@
+
 import SwiftUI
 import ComposableArchitecture
 import Domain
@@ -28,6 +29,24 @@ struct AddExpenseView: View {
                     
                     TextField("메모 (선택사항)", text: $store.memo)
                 }
+                
+                Section(header: Text("카테고리 관리")) {
+                    ForEach(store.categories, id: \.self) { category in
+                        HStack {
+                            Text(category.name)
+                            Spacer()
+                            Button(role: .destructive) {
+                                store.send(.deleteCategory(category))
+                            } label: {
+                                Image(systemName: "trash")
+                            }
+                        }
+                    }
+                    
+                    Button("새 카테고리 추가") {
+                        store.send(.addCategoryButtonTapped)
+                    }
+                }
             }
             .navigationTitle("지출 기록")
             .toolbar {
@@ -38,7 +57,23 @@ struct AddExpenseView: View {
                     Button("저장") { store.send(.saveButtonTapped) }
                 }
             }
+            .onAppear {
+                store.send(.onAppear)
+            }
+            .sheet(item: $store.scope(state: \.destination?.addCategory, action: \.destination.addCategory)) { store in
+                AddCategoryView(store: store)
+            }
         }
     }
     
+}
+
+
+#Preview {
+    AddExpenseView(
+        store: .init(
+            initialState: AddExpenseReducer.State(),
+            reducer: AddExpenseReducer.init
+        )
+    )
 }

@@ -1,4 +1,3 @@
-
 //
 //  UseCase+Dependency.swift
 //  Domain
@@ -116,5 +115,109 @@ public extension DependencyValues {
     var getHeatmapDataUseCase: GetHeatmapDataUseCaseDependency {
         get { self[GetHeatmapDataUseCaseDependency.self] }
         set { self[GetHeatmapDataUseCaseDependency.self] = newValue }
+    }
+}
+
+// MARK: - GetCategoriesUseCase Dependency
+public struct GetCategoriesUseCaseDependency {
+    public init(execute: @escaping () -> [Category]) {
+        self.execute = execute
+    }
+    
+    public var execute: () -> [Category]
+}
+
+extension GetCategoriesUseCaseDependency: DependencyKey {
+    public static let liveValue = Self(
+        execute: { 
+            fatalError("GetCategoriesUseCase not implemented in live environment")
+        }
+    )
+    public static let testValue = Self(
+        execute: { [] }
+    )
+    public static let previewValue = Self(
+        execute: {
+            [
+                Category(id: UUID(), name: "식비", symbol: "🍚", isDefault: true),
+                Category(id: UUID(), name: "교통", symbol: "🚗", isDefault: true),
+                Category(id: UUID(), name: "쇼핑", symbol: "🛍️", isDefault: true),
+            ]
+        }
+    )
+}
+
+public extension DependencyValues {
+    var getCategoriesUseCase: GetCategoriesUseCaseDependency {
+        get { self[GetCategoriesUseCaseDependency.self] }
+        set { self[GetCategoriesUseCaseDependency.self] = newValue }
+    }
+}
+
+// MARK: - AddCategoryUseCase Dependency
+public struct AddCategoryUseCaseDependency {
+    public init(execute: @escaping (Category) throws -> Void) {
+        self.execute = execute
+    }
+    
+    public var execute: (Category) throws -> Void
+}
+
+extension AddCategoryUseCaseDependency: DependencyKey {
+    public static let liveValue = Self(
+        execute: { _ in
+            fatalError("AddCategoryUseCase not implemented in live environment")
+        }
+    )
+    public static let testValue = Self(
+        execute: { _ in
+            print("AddCategoryUseCase.testValue.execute called")
+        }
+    )
+    public static let previewValue = Self(
+        execute: { _ in
+            print("AddCategoryUseCase.previewValue.execute called")
+        }
+    )
+}
+
+public extension DependencyValues {
+    var addCategoryUseCase: AddCategoryUseCaseDependency {
+        get { self[AddCategoryUseCaseDependency.self] }
+        set { self[AddCategoryUseCaseDependency.self] = newValue }
+    }
+}
+
+// MARK: - DeleteCategoryUseCase Dependency
+public struct DeleteCategoryUseCaseDependency {
+    public init(execute: @escaping (Category) throws -> Void) {
+        self.execute = execute
+    }
+    
+    public var execute: (Category) throws -> Void
+}
+
+extension DeleteCategoryUseCaseDependency: DependencyKey {
+    public static let liveValue = Self(
+        execute: { _ in
+            fatalError("DeleteCategoryUseCase not implemented in live environment")
+        }
+    )
+    public static let testValue = Self(
+        execute: { _ in
+            print("DeleteCategoryUseCase.testValue.execute called")
+        }
+    )
+    public static let previewValue = Self(
+        execute: { _ in
+            print("DeleteCategoryUseCase.previewValue.execute called")
+        }
+    )
+}
+
+public extension DependencyValues {
+    var deleteCategoryUseCase: DeleteCategoryUseCaseDependency {
+        get { self[DeleteCategoryUseCaseDependency.self] }
+        set { self[DeleteCategoryUseCaseDependency.self] = newValue }
     }
 }

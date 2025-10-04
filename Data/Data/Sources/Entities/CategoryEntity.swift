@@ -1,21 +1,22 @@
 //
 //  CategoryEntity.swift
-//  Database
+//  Data
 //
-//  Created by JohyeonYoon on 10/2/25.
+//  Created by JohyeonYoon on 10/3/25.
 //
 
 import Foundation
 import SwiftData
+import Domain
 
 @Model
 public final class CategoryEntity {
-    @Attribute(.unique) public var id: UUID
-    var name: String
-    var symbol: String
-    var isDefault: Bool
+    @Attribute(.unique) public let id: UUID
+    public let name: String
+    public let symbol: String
+    public let isDefault: Bool
     
-    public init(id: UUID = UUID(), name: String, symbol: String, isDefault: Bool = false) {
+    public init(id: UUID, name: String, symbol: String, isDefault: Bool) {
         self.id = id
         self.name = name
         self.symbol = symbol
@@ -23,22 +24,14 @@ public final class CategoryEntity {
     }
 }
 
-@Model
-public final class AppSettingsEntity {
-    @Attribute(.unique) public var id: UUID
-    var notificationsEnabled: Bool
-    var reminderMinutesFromMidnight: Int
-    var currencyCode: String
+extension CategoryEntity {
+    func toDomain() -> Category {
+        return Category(id: id, name: name, symbol: symbol, isDefault: isDefault)
+    }
+}
 
-    public init(
-        id: UUID = UUID(),
-        notificationsEnabled: Bool,
-        reminderMinutesFromMidnight: Int,
-        currencyCode: String
-    ) {
-        self.id = id
-        self.notificationsEnabled = notificationsEnabled
-        self.reminderMinutesFromMidnight = reminderMinutesFromMidnight
-        self.currencyCode = currencyCode
+extension Category {
+    func toEntity() -> CategoryEntity {
+        return CategoryEntity(id: id, name: name, symbol: symbol, isDefault: isDefault)
     }
 }
