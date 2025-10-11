@@ -1,7 +1,7 @@
 
 import SwiftUI
-import ComposableArchitecture
 import Domain
+import CoreTCA
 
 struct AddCategoryView: View {
     @Bindable var store: StoreOf<AddCategoryReducer>

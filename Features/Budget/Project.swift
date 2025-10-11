@@ -1,30 +1,30 @@
+
 import ProjectDescription
 
 let project = Project(
-    name: "Home",
+    name: "Budget",
     targets: [
         .target(
-            name: "Home",
+            name: "Budget",
             destinations: .iOS,
             product: .framework,
-            bundleId: "com.jalynneyoon.Home",
+            bundleId: "com.jalynneyoon.Budget",
             infoPlist: .default,
-            sources: ["Home/Sources/**"],
-            resources: ["Home/Resources/**"],
+            sources: ["Budget/Sources/**"],
+            resources: ["Budget/Resources/**"],
             dependencies: [
                 .project(target: "Domain", path: "../../Domain"),
-                .project(target: "Budget", path: "../Budget"),
                 .project(target: "CoreTCA", path: "../../Core/CoreTCA"),
             ]
         ),
         .target(
-            name: "HomeTests",
+            name: "BudgetTests",
             destinations: .iOS,
             product: .unitTests,
-            bundleId: "com.jalynneyoon.HomeTests",
+            bundleId: "com.jalynneyoon.BudgetTests",
             infoPlist: .default,
-            sources: ["Home/Tests/**"],
-            dependencies: [.target(name: "Home")]
+            sources: ["Budget/Tests/**"],
+            dependencies: [.target(name: "Budget")]
         ),
     ]
 )

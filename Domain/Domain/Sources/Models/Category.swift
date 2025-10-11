@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Category: Hashable {
+public struct Category: Identifiable, Hashable {
     public let id: UUID
     public let name: String
     public let symbol: String

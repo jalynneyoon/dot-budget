@@ -1,6 +1,6 @@
 
 import SwiftUI
-import ComposableArchitecture
+import CoreTCA
 
 struct HeatmapView: View {
     @Bindable var store: StoreOf<HeatmapReducer>

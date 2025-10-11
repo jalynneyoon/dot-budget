@@ -1,29 +1,28 @@
-
-import ComposableArchitecture
 import Foundation
 import Domain
+import CoreTCA
 
 @Reducer
-struct AddCategoryReducer {
+public struct AddCategoryReducer {
     @ObservableState
-    struct State: Equatable {
+    public struct State: Equatable {
         var name: String = ""
         var symbol: String = ""
     }
 
-    enum Action: BindableAction {
+    public enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case cancelButtonTapped
         case saveButtonTapped
         case delegate(Delegate)
         
-        enum Delegate {
+        public enum Delegate: Equatable {
             case categorySaved(Domain.Category)
             case cancelTapped
         }
     }
 
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         BindingReducer()
         Reduce { state, action in
             switch action {

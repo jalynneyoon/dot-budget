@@ -1,5 +1,5 @@
 import SwiftUI
-import ComposableArchitecture
+import CoreTCA
 
 @main
 struct HomeApp: App {

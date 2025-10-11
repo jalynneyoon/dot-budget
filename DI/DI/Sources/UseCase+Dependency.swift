@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import ComposableArchitecture
+import CoreTCA
 
 // MARK: - AddExpenseUseCase Dependency
 public struct AddExpenseUseCaseDependency {
@@ -59,12 +59,46 @@ extension GetMonthlySummaryUseCaseDependency: DependencyKey {
     )
     public static let testValue = Self(
         execute: { _ in
-            .init(totalExpense: 0, budgetPercentage: 0, feedbackMessage: "Test feedback")
+            MonthlySummary(
+                totalBudget: 2000,
+                totalExpense: 0,
+                categorySummaries: [
+                    CategorySummary(
+                        category: .init(id: UUID(), name: "식비", symbol: "🍚", isDefault: true),
+                        budgetAmount: 5000,
+                        spentAmount: 0,
+                        remainingAmount: 5000
+                    )
+                ]
+            )
         }
     )
     public static let previewValue = Self(
         execute: { _ in
-            .init(totalExpense: 12345, budgetPercentage: 75, feedbackMessage: "저번 달 보다 10% 절약하셨네요! 잘하고 있어요!")
+            MonthlySummary(
+                totalBudget: 10000,
+                totalExpense: 7500,
+                categorySummaries: [
+                    CategorySummary(
+                        category: .init(id: UUID(), name: "식비", symbol: "🍚", isDefault: true),
+                        budgetAmount: 5000,
+                        spentAmount: 3000,
+                        remainingAmount: 2000
+                    ),
+                    CategorySummary(
+                        category: .init(id: UUID(), name: "교통", symbol: "🚗", isDefault: true),
+                        budgetAmount: 3000,
+                        spentAmount: 2000,
+                        remainingAmount: 1000
+                    ),
+                    CategorySummary(
+                        category: .init(id: UUID(), name: "쇼핑", symbol: "🛍️", isDefault: true),
+                        budgetAmount: 2000,
+                        spentAmount: 2500,
+                        remainingAmount: -500
+                    )
+                ]
+            )
         }
     )
 }
@@ -219,5 +253,69 @@ public extension DependencyValues {
     var deleteCategoryUseCase: DeleteCategoryUseCaseDependency {
         get { self[DeleteCategoryUseCaseDependency.self] }
         set { self[DeleteCategoryUseCaseDependency.self] = newValue }
+    }
+}
+
+// MARK: - SetBudgetUseCase Dependency
+public struct SetBudgetUseCaseDependency {
+    public init(execute: @escaping (Budget) throws -> Void) {
+        self.execute = execute
+    }
+    
+    public var execute: (Budget) throws -> Void
+}
+
+extension SetBudgetUseCaseDependency: DependencyKey {
+    public static let liveValue = Self(
+        execute: { _ in
+            fatalError("SetBudgetUseCase not implemented in live environment")
+        }
+    )
+    public static let testValue = Self(
+        execute: { _ in
+            print("SetBudgetUseCase.testValue.execute called")
+        }
+    )
+    public static let previewValue = Self(
+        execute: { _ in
+            print("SetBudgetUseCase.previewValue.execute called")
+        }
+    )
+}
+
+public extension DependencyValues {
+    var setBudgetUseCase: SetBudgetUseCaseDependency {
+        get { self[SetBudgetUseCaseDependency.self] }
+        set { self[SetBudgetUseCaseDependency.self] = newValue }
+    }
+}
+
+// MARK: - GetBudgetsUseCase Dependency
+public struct GetBudgetsUseCaseDependency {
+    public init(execute: @escaping (Int) throws -> [Budget]) {
+        self.execute = execute
+    }
+    
+    public var execute: (Int) throws -> [Budget]
+}
+
+extension GetBudgetsUseCaseDependency: DependencyKey {
+    public static let liveValue = Self(
+        execute: { _ in
+            fatalError("GetBudgetsUseCase not implemented in live environment")
+        }
+    )
+    public static let testValue = Self(
+        execute: { _ in [] }
+    )
+    public static let previewValue = Self(
+        execute: { _ in [] }
+    )
+}
+
+public extension DependencyValues {
+    var getBudgetsUseCase: GetBudgetsUseCaseDependency {
+        get { self[GetBudgetsUseCaseDependency.self] }
+        set { self[GetBudgetsUseCaseDependency.self] = newValue }
     }
 }

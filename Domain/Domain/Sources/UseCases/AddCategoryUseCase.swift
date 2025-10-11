@@ -1,4 +1,3 @@
-
 //
 //  AddCategoryUseCase.swift
 //  Domain

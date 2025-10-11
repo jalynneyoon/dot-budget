@@ -23,15 +23,3 @@ public final class CategoryEntity {
         self.isDefault = isDefault
     }
 }
-
-extension CategoryEntity {
-    func toDomain() -> Category {
-        return Category(id: id, name: name, symbol: symbol, isDefault: isDefault)
-    }
-}
-
-extension Category {
-    func toEntity() -> CategoryEntity {
-        return CategoryEntity(id: id, name: name, symbol: symbol, isDefault: isDefault)
-    }
-}

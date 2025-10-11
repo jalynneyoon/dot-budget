@@ -1,26 +1,26 @@
 
-import ComposableArchitecture
 import Foundation
 import Domain
+import CoreTCA
 
 @Reducer
-struct HeatmapReducer {
+public struct HeatmapReducer {
     @ObservableState
-    struct State: Equatable {
+    public struct State: Equatable {
         var heatmapData: [Date: Int] = [:]
         var isLoading: Bool = false
         var error: String? = nil
         var currentMonth: Date = .now // Month for which to display heatmap
     }
 
-    enum Action {
+    public enum Action: Equatable {
         case onAppear
         case heatmapDataResponse(TaskResult<[Date: Int]>)
     }
 
     @Dependency(\.getHeatmapDataUseCase) var getHeatmapDataUseCase
 
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .onAppear:

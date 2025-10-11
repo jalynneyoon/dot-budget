@@ -104,15 +104,15 @@ extension BadgeUnlockEntity {
 }
 
 // MARK: - AppSettings
-
-extension AppSettingsEntity {
-    func toDomain() -> Domain.AppSettings {
-        return Domain.AppSettings(
-            id: self.id,
-            notificationsEnabled: self.notificationsEnabled,
-            reminderMinutesFromMidnight: self.reminderMinutesFromMidnight,
-            currencyCode: self.currencyCode
-        )
-    }
-}
-
+//
+//extension AppSettingsEntity {
+//    func toDomain() -> Domain.AppSettings {
+//        return Domain.AppSettings(
+//            id: self.id,
+//            notificationsEnabled: self.notificationsEnabled,
+//            reminderMinutesFromMidnight: self.reminderMinutesFromMidnight,
+//            currencyCode: self.currencyCode
+//        )
+//    }
+//}
+//

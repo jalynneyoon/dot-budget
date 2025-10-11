@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Budget {
+public struct Budget: Equatable {
     public let id: UUID
     public let monthKey: Int
     public let category: Category

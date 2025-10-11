@@ -1,4 +1,3 @@
-
 //
 //  GetHeatmapDataUseCase.swift
 //  Domain

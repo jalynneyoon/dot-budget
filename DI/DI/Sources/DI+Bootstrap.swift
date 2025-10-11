@@ -7,7 +7,7 @@
 
 import Foundation
 import Domain
-import ComposableArchitecture
+import CoreTCA
 import Data
 import SwiftData
 
@@ -18,13 +18,16 @@ public enum DI {
         
         let expenseRepo = DefaultExpenseRepository(modelContext: modelContext)
         let categoryRepo = DefaultCategoryRepository(modelContext: modelContext)
+        let budgetRepo = DefaultBudgetRepository(modelContext: modelContext)
         
         let addExpense = AddExpenseUseCase(expenseRepository: expenseRepo)
-        let getMonthlySummary = GetMonthlySummaryUseCase(expenseRepository: expenseRepo)
+        let getMonthlySummary = GetMonthlySummaryUseCase(expenseRepository: expenseRepo, budgetRepository: budgetRepo)
         let getHeatmapData = GetHeatmapDataUseCase(expenseRepository: expenseRepo)
         let getCategories = GetCategoriesUseCase(categoryRepository: categoryRepo)
         let addCategory = AddCategoryUseCase(categoryRepository: categoryRepo)
         let deleteCategory = DeleteCategoryUseCase(categoryRepository: categoryRepo)
+        let setBudget = SetBudgetUseCase(budgetRepository: budgetRepo)
+        let getBudgets = GetBudgetsUseCase(budgetRepository: budgetRepo)
         
         withDependencies {
             $0.addExpenseUseCase = .init(execute: addExpense.execute)
@@ -33,6 +36,8 @@ public enum DI {
             $0.getCategoriesUseCase = .init(execute: getCategories.execute)
             $0.addCategoryUseCase = .init(execute: addCategory.execute)
             $0.deleteCategoryUseCase = .init(execute: deleteCategory.execute)
+            $0.setBudgetUseCase = .init(execute: setBudget.execute)
+            $0.getBudgetsUseCase = .init(execute: getBudgets.execute)
         } operation: {}
     }
 }

@@ -1,4 +1,3 @@
-
 //
 //  DeleteCategoryUseCase.swift
 //  Domain

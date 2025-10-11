@@ -1,18 +1,17 @@
-
-import ComposableArchitecture
 import Foundation
 import Domain
 import Shared
+import CoreTCA
 
 @Reducer
-struct AddExpenseReducer {
-    @Reducer(state: .equatable)
-    enum Destination {
+public struct AddExpenseReducer {
+    @Reducer(state: .equatable, action: .equatable)
+    public enum Destination {
         case addCategory(AddCategoryReducer)
     }
     
     @ObservableState
-    struct State: Equatable {
+    public struct State: Equatable {
         var amount: String = ""
         var selectedCategory: Domain.Category? 
         var expenseDate: Date = .now
@@ -21,7 +20,7 @@ struct AddExpenseReducer {
         @Presents var destination: Destination.State?
     }
 
-    enum Action: BindableAction {
+    public enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case cancelButtonTapped
         case saveButtonTapped
@@ -32,7 +31,7 @@ struct AddExpenseReducer {
         case destination(PresentationAction<Destination.Action>)
         case delegate(Delegate)
         
-        enum Delegate {
+        public enum Delegate: Equatable {
             case expenseSaved
             case cancelTapped
         }
@@ -43,7 +42,7 @@ struct AddExpenseReducer {
     @Dependency(\.addCategoryUseCase) var addCategoryUseCase
     @Dependency(\.deleteCategoryUseCase) var deleteCategoryUseCase
 
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         BindingReducer()
         Reduce { state, action in
             switch action {

@@ -1,7 +1,6 @@
 import SwiftUI
-import ComposableArchitecture
 import Domain
-import Dependencies
+import CoreTCA
 
 struct SummaryCardView: View {
     @Bindable var store: StoreOf<SummaryCardReducer>
@@ -13,17 +12,24 @@ struct SummaryCardView: View {
             } else if let error = store.error {
                 Text("Error: \(error)")
                     .foregroundColor(.red)
-            } else {
-                Text("이번 달 총 지출: \(store.totalExpense)원")
+            } else if let summary = store.summary {
+                Text("이번 달 총 예산: \(summary.totalBudget)원")
+                    .font(.headline)
+                Text("이번 달 총 지출: \(summary.totalExpense)원")
                     .font(.headline)
                 
-                Text("예산 대비: \(String(format: "%.1f", store.budgetPercentage))%")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
+                Divider()
                 
-                Text(store.feedbackMessage)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                ForEach(summary.categorySummaries, id: \.category.id) { categorySummary in
+                    HStack {
+                        Text(categorySummary.category.name)
+                        Spacer()
+                        Text("\(categorySummary.spentAmount) / \(categorySummary.budgetAmount)원")
+                        Text("(\(categorySummary.remainingAmount)원 남음)")
+                            .font(.caption)
+                            .foregroundColor(categorySummary.remainingAmount < 0 ? .red : .green)
+                    }
+                }
             }
         }
         .padding()

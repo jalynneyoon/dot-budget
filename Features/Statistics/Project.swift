@@ -19,7 +19,9 @@ let project = Project(
             ),
             sources: ["Statistics/Sources/**"],
             resources: ["Statistics/Resources/**"],
-            dependencies: []
+            dependencies: [
+                .project(target: "CoreTCA", path: "../../Core/CoreTCA"),
+            ]
         ),
         .target(
             name: "StatisticsTests",

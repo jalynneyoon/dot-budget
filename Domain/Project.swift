@@ -2,30 +2,16 @@ import ProjectDescription
 
 let project = Project(
     name: "Domain",
-    packages: [
-        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", .upToNextMajor(from: "1.11.0"))
-    ],
     targets: [
         .target(
             name: "Domain",
             destinations: .iOS,
             product: .framework,
             bundleId: "com.jalynneyoon.Domain",
-            infoPlist: .extendingDefault(
-                with: [
-                    "UILaunchScreen": [
-                        "UIColorName": "",
-                        "UIImageName": "",
-                    ],
-                ]
-            ),
+            infoPlist: .default,
             sources: ["Domain/Sources/**"],
             resources: [],
             dependencies: [
-                .package(product: "ComposableArchitecture"),
-                .package(product: "Dependencies"),
-                .package(product: "CasePaths"),
-                .package(product: "Perception"),
                 .project(target: "Shared", path: "../Shared"),
             ]
         ),

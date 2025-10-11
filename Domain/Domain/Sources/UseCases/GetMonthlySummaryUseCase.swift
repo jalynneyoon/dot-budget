@@ -1,4 +1,3 @@
-
 //
 //  GetMonthlySummaryUseCase.swift
 //  Domain
@@ -7,65 +6,76 @@
 //
 
 import Foundation
+import Shared
 
 public final class GetMonthlySummaryUseCase {
     private let expenseRepository: ExpenseRepository
+    private let budgetRepository: BudgetRepository
 
-    public init(expenseRepository: ExpenseRepository) {
+    public init(expenseRepository: ExpenseRepository, budgetRepository: BudgetRepository) {
         self.expenseRepository = expenseRepository
+        self.budgetRepository = budgetRepository
     }
 
     public func execute(for date: Date) async throws -> MonthlySummary {
         let calendar = Calendar.current
+        let monthKey = DateKeys.monthKey(from: date, calendar: calendar)
         
-        // Current Month Data
-        let currentMonthExpenses = try await expenseRepository.getMonthlyExpenses(for: date)
-        let currentMonthTotal = currentMonthExpenses.reduce(0) { $0 + $1.amount }
-        let currentMonthBudget = try await expenseRepository.getBudget(for: date)
+        // Data
+        let budgets = try budgetRepository.getBudgets(for: monthKey)
+        let expenses = try await expenseRepository.getMonthlyExpenses(for: date)
         
-        // Previous Month Data
-        guard let previousMonthDate = calendar.date(byAdding: .month, value: -1, to: date) else { throw SummaryError.invalidDate }
-        let previousMonthExpenses = try await expenseRepository.getMonthlyExpenses(for: previousMonthDate)
-        let previousMonthTotal = previousMonthExpenses.reduce(0) { $0 + $1.amount }
+        let totalBudget = budgets.reduce(0) { $0 + $1.amount }
+        let totalExpense = expenses.reduce(0) { $0 + $1.amount }
         
-        // Calculate percentage against budget
-        var budgetPercentage: Double = 0
-        if let budgetAmount = currentMonthBudget?.amount, budgetAmount > 0 {
-            budgetPercentage = Double(currentMonthTotal) / Double(budgetAmount) * 100
-        }
+        var categorySummaries: [CategorySummary] = []
+        let expensesByCategory = Dictionary(grouping: expenses, by: { $0.category })
         
-        // Calculate feedback message
-        var feedbackMessage: String = ""
-        if previousMonthTotal > 0 {
-            let percentageChange = (Double(previousMonthTotal) - Double(currentMonthTotal)) / Double(previousMonthTotal) * 100
-            if percentageChange > 0 {
-                feedbackMessage = "저번 달보다 \(Int(percentageChange))% 절약했어요!"
-            } else if percentageChange < 0 {
-                feedbackMessage = "저번 달보다 \(Int(-percentageChange))% 더 지출했어요."
-            } else {
-                feedbackMessage = "저번 달과 비슷한 수준으로 지출했어요."
-            }
-        } else {
-            feedbackMessage = "이번 달 지출을 시작했어요!"
+        for budget in budgets {
+            let categoryExpenses = expensesByCategory[budget.category]?.reduce(0) { $0 + $1.amount } ?? 0
+            let remainingAmount = budget.amount - categoryExpenses
+            
+            categorySummaries.append(
+                CategorySummary(
+                    category: budget.category,
+                    budgetAmount: budget.amount,
+                    spentAmount: categoryExpenses,
+                    remainingAmount: remainingAmount
+                )
+            )
         }
         
         return MonthlySummary(
-            totalExpense: currentMonthTotal,
-            budgetPercentage: budgetPercentage,
-            feedbackMessage: feedbackMessage
+            totalBudget: totalBudget,
+            totalExpense: totalExpense,
+            categorySummaries: categorySummaries
         )
     }
 }
 
 public struct MonthlySummary: Equatable {
+    public let totalBudget: Int
     public let totalExpense: Int
-    public let budgetPercentage: Double
-    public let feedbackMessage: String
+    public let categorySummaries: [CategorySummary]
     
-    public init(totalExpense: Int, budgetPercentage: Double, feedbackMessage: String) {
+    public init(totalBudget: Int, totalExpense: Int, categorySummaries: [CategorySummary]) {
+        self.totalBudget = totalBudget
         self.totalExpense = totalExpense
-        self.budgetPercentage = budgetPercentage
-        self.feedbackMessage = feedbackMessage
+        self.categorySummaries = categorySummaries
+    }
+}
+
+public struct CategorySummary: Equatable {
+    public let category: Category
+    public let budgetAmount: Int
+    public let spentAmount: Int
+    public let remainingAmount: Int
+    
+    public init(category: Category, budgetAmount: Int, spentAmount: Int, remainingAmount: Int) {
+        self.category = category
+        self.budgetAmount = budgetAmount
+        self.spentAmount = spentAmount
+        self.remainingAmount = remainingAmount
     }
 }
 

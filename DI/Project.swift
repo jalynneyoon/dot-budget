@@ -2,9 +2,6 @@ import ProjectDescription
 
 let project = Project(
     name: "DI",
-    packages: [
-        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", .upToNextMajor(from: "1.11.0"))
-    ],
     targets: [
         .target(
             name: "DI",
@@ -16,10 +13,7 @@ let project = Project(
             dependencies: [
                 .project(target: "Domain", path: "../Domain"),
                 .project(target: "Data", path: "../Data"),
-                .package(product: "ComposableArchitecture"),
-                .package(product: "Dependencies"),
-                .package(product: "CasePaths"),
-                .package(product: "Perception"),
+                .project(target: "CoreTCA", path: "../Core/CoreTCA"),
             ]
         ),
     ]

@@ -7,10 +7,17 @@ struct ContentView: View {
 
     var body: some View {
         TabView {
-            HomeView()
-                .tabItem {
-                    Label("홈", systemImage: "house.fill")
-                }
+            HomeView(
+                store: Store(
+                    initialState: HomeReducer.State(),
+                    reducer: {
+                        Reduce<HomeReducer.State, HomeReducer.Action> { _, _ in .none }
+                    }
+                )
+            )
+            .tabItem {
+                Label("홈", systemImage: "house.fill")
+            }
             
             StatisticsView()
                 .tabItem {

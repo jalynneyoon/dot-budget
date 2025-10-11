@@ -1,4 +1,3 @@
-
 //
 //  DefaultCategoryRepository.swift
 //  Data
@@ -17,7 +16,7 @@ public final class DefaultCategoryRepository: CategoryRepository {
         self.modelContext = modelContext
     }
 
-    public func getCategories() -> [Category] {
+    public func getCategories() -> [Domain.Category] {
         let descriptor = FetchDescriptor<CategoryEntity>()
         do {
             let entities = try modelContext.fetch(descriptor)
@@ -28,13 +27,16 @@ public final class DefaultCategoryRepository: CategoryRepository {
         }
     }
 
-    public func addCategory(_ category: Category) throws {
-        let categoryEntity = category.toEntity()
+    public func addCategory(_ category: Domain.Category) throws {
+        let categoryEntity: CategoryEntity = category.toEntity()
         modelContext.insert(categoryEntity)
     }
 
-    public func deleteCategory(_ category: Category) throws {
-        let predicate = #Predicate<CategoryEntity> { $0.id == category.id }
+    public func deleteCategory(_ category: Domain.Category) throws {
+        let id = category.id
+        let predicate = #Predicate<CategoryEntity> { entity in
+            entity.id == id
+        }
         let descriptor = FetchDescriptor<CategoryEntity>(predicate: predicate)
         
         if let entity = try modelContext.fetch(descriptor).first {

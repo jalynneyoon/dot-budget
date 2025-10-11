@@ -34,7 +34,7 @@ func bootstrapCategories(context: ModelContext) async {
         let fetchDescriptor = FetchDescriptor<CategoryEntity>(predicate: #Predicate { $0.name == name })
         let exists = (try? !context.fetch(fetchDescriptor).isEmpty) ?? false
         if !exists {
-            let category = CategoryEntity(name: name, symbol: symbol, isDefault: true)
+            let category = CategoryEntity(id: UUID(), name: name, symbol: symbol, isDefault: true)
             context.insert(category)
         }
     }

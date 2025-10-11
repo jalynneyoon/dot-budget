@@ -1,12 +1,13 @@
 import SwiftUI
-import ComposableArchitecture
 import Domain
 import Shared
+import Budget
+import CoreTCA
 
 public struct HomeView: View {
     let store: StoreOf<HomeReducer>
 
-    init(store: StoreOf<HomeReducer>) {
+    public init(store: StoreOf<HomeReducer>) {
         self.store = store
     }
 
@@ -36,44 +37,46 @@ public struct HomeView: View {
                     }
                 }
 
-                Button(action: {
-                    viewStore.send(.fabButtonTapped)
-                }) {
-                    Image(systemName: "plus")
-                        .font(.title.weight(.semibold))
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .clipShape(Circle())
-                        .shadow(radius: 4, x: 0, y: 4)
+                VStack {
+                    Button(action: {
+                        viewStore.send(.budgetButtonTapped)
+                    }) {
+                        Image(systemName: "dollarsign.circle")
+                            .font(.title.weight(.semibold))
+                            .padding()
+                            .background(Color.green)
+                            .foregroundColor(.white)
+                            .clipShape(Circle())
+                            .shadow(radius: 4, x: 0, y: 4)
+                    }
+                    .padding()
+                    
+                    Button(action: {
+                        viewStore.send(.fabButtonTapped)
+                    }) {
+                        Image(systemName: "plus")
+                            .font(.title.weight(.semibold))
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .clipShape(Circle())
+                            .shadow(radius: 4, x: 0, y: 4)
+                    }
+                    .padding()
                 }
-                .padding()
             }
             .sheet(store: self.store.scope(state: \.$addExpense, action: \.addExpense)) { store in
                 AddExpenseView(store: store)
+            }
+            .sheet(store: self.store.scope(state: \.$budget, action: \.budget)) { store in
+                BudgetView(store: store)
             }
         }
     }
 }
 
 #Preview {
-    // MockExpenseRepository를 사용하여 UseCase들을 생성하고 주입
-    let mockRepo = MockExpenseRepository(
-        initialExpenses: [
-            Expense(id: UUID(), date: Date().addingTimeInterval(-86400*20), amount: 25000, category: nil, memo: "Mock Expense 1", dayKey: 0, monthKey: 0, createdAt: .now, updatedAt: .now),
-            Expense(id: UUID(), date: Date().addingTimeInterval(-86400*60), amount: 10000, category: nil, memo: "Mock Expense 2", dayKey: 0, monthKey: 0, createdAt: .now, updatedAt: .now),
-            Expense(id: UUID(), date: Date().addingTimeInterval(-86400*1), amount: 3200, category: nil, memo: "Mock Expense 3", dayKey: 0, monthKey: 0, createdAt: .now, updatedAt: .now),
-            Expense(id: UUID(), date: Date(), amount: 300000, category: nil, memo: "Mock Expense 4", dayKey: 0, monthKey: 0, createdAt: .now, updatedAt: .now)
-
-        ],
-        initialBudgets: [
-            Budget(id: UUID(), monthKey: DateKeys.monthKey(from: .now), category: Category(id: UUID(), name: "식비", symbol: "fork.knife", isDefault: true), amount: 500000)
-        ]
-    )
-    let addExpenseUseCase = AddExpenseUseCase(expenseRepository: mockRepo)
-    let getMonthlySummaryUseCase = GetMonthlySummaryUseCase(expenseRepository: mockRepo)
-    let getHeatmapDataUseCase = GetHeatmapDataUseCase(expenseRepository: mockRepo)
-    
+//     MockRepository를 사용하여 UseCase들을 생성하고 주입
     let mockCategoryRepo = MockCategoryRepository(
         initialCategories: [
             Category(id: UUID(), name: "식비", symbol: "fork.knife", isDefault: true),
@@ -83,11 +86,34 @@ public struct HomeView: View {
             Category(id: UUID(), name: "기타", symbol: "ellipsis", isDefault: true)
         ]
     )
+
+    let mockBudgetRepo = MockBudgetRepository(
+        initialBudgets: [
+            Budget(id: UUID(), monthKey: DateKeys.monthKey(from: .now), category: mockCategoryRepo.categories[0], amount: 500000),
+            Budget(id: UUID(), monthKey: DateKeys.monthKey(from: .now), category: mockCategoryRepo.categories[1], amount: 100000)
+        ]
+    )
     
+    let mockExpenseRepo = MockExpenseRepository(
+        initialExpenses: [
+            Expense(id: UUID(), date: Date().addingTimeInterval(-86400*20), amount: 25000, category: mockCategoryRepo.categories[0], memo: "Mock Expense 1", dayKey: 0, monthKey: 0, createdAt: .now, updatedAt: .now),
+            Expense(id: UUID(), date: Date().addingTimeInterval(-86400*60), amount: 10000, category: mockCategoryRepo.categories[1], memo: "Mock Expense 2", dayKey: 0, monthKey: 0, createdAt: .now, updatedAt: .now),
+            Expense(id: UUID(), date: Date().addingTimeInterval(-86400*1), amount: 3200, category: mockCategoryRepo.categories[0], memo: "Mock Expense 3", dayKey: 0, monthKey: 0, createdAt: .now, updatedAt: .now),
+            Expense(id: UUID(), date: Date(), amount: 300000, category: mockCategoryRepo.categories[0], memo: "Mock Expense 4", dayKey: 0, monthKey: 0, createdAt: .now, updatedAt: .now)
+
+        ]
+    )
+
+    let addExpenseUseCase = AddExpenseUseCase(expenseRepository: mockExpenseRepo)
+    let getMonthlySummaryUseCase = GetMonthlySummaryUseCase(expenseRepository: mockExpenseRepo, budgetRepository: mockBudgetRepo)
+    let getHeatmapDataUseCase = GetHeatmapDataUseCase(expenseRepository: mockExpenseRepo)
+
     let getCategories = GetCategoriesUseCase(categoryRepository: mockCategoryRepo)
     let addCategory = AddCategoryUseCase(categoryRepository: mockCategoryRepo)
     let deleteCategory = DeleteCategoryUseCase(categoryRepository: mockCategoryRepo)
-     
+    let setBudget = SetBudgetUseCase(budgetRepository: mockBudgetRepo)
+    let getBudgets = GetBudgetsUseCase(budgetRepository: mockBudgetRepo)
+   
 
     withDependencies {
         $0.addExpenseUseCase = .init(execute: addExpenseUseCase.execute)
@@ -96,11 +122,16 @@ public struct HomeView: View {
         $0.getCategoriesUseCase = .init(execute: getCategories.execute)
         $0.addCategoryUseCase = .init(execute: addCategory.execute)
         $0.deleteCategoryUseCase = .init(execute: deleteCategory.execute)
+        $0.setBudgetUseCase = .init(execute: setBudget.execute)
+        $0.getBudgetsUseCase = .init(execute: getBudgets.execute)
     } operation: {
         HomeView(
-            store: Store(initialState: HomeReducer.State()) {
-                HomeReducer()
-            }
+            store: Store(
+                initialState: HomeReducer.State(),
+                reducer: {
+                    Reduce<HomeReducer.State, HomeReducer.Action> { _, _ in .none }
+                }
+            )
         )
     }
 }
