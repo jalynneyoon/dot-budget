@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreTCA
+import Domain
 
 // MARK: - AddExpenseUseCase Dependency
 public struct AddExpenseUseCaseDependency {
@@ -154,11 +155,11 @@ public extension DependencyValues {
 
 // MARK: - GetCategoriesUseCase Dependency
 public struct GetCategoriesUseCaseDependency {
-    public init(execute: @escaping () -> [Category]) {
+    public init(execute: @escaping () -> [Domain.Category]) {
         self.execute = execute
     }
     
-    public var execute: () -> [Category]
+    public var execute: () -> [Domain.Category]
 }
 
 extension GetCategoriesUseCaseDependency: DependencyKey {
@@ -173,9 +174,9 @@ extension GetCategoriesUseCaseDependency: DependencyKey {
     public static let previewValue = Self(
         execute: {
             [
-                Category(id: UUID(), name: "식비", symbol: "🍚", isDefault: true),
-                Category(id: UUID(), name: "교통", symbol: "🚗", isDefault: true),
-                Category(id: UUID(), name: "쇼핑", symbol: "🛍️", isDefault: true),
+                Domain.Category(id: UUID(), name: "식비", symbol: "🍚", isDefault: true),
+                Domain.Category(id: UUID(), name: "교통", symbol: "🚗", isDefault: true),
+                Domain.Category(id: UUID(), name: "쇼핑", symbol: "🛍️", isDefault: true),
             ]
         }
     )
@@ -190,11 +191,11 @@ public extension DependencyValues {
 
 // MARK: - AddCategoryUseCase Dependency
 public struct AddCategoryUseCaseDependency {
-    public init(execute: @escaping (Category) throws -> Void) {
+    public init(execute: @escaping (Domain.Category) throws -> Void) {
         self.execute = execute
     }
     
-    public var execute: (Category) throws -> Void
+    public var execute: (Domain.Category) throws -> Void
 }
 
 extension AddCategoryUseCaseDependency: DependencyKey {
@@ -224,11 +225,11 @@ public extension DependencyValues {
 
 // MARK: - DeleteCategoryUseCase Dependency
 public struct DeleteCategoryUseCaseDependency {
-    public init(execute: @escaping (Category) throws -> Void) {
+    public init(execute: @escaping (Domain.Category) throws -> Void) {
         self.execute = execute
     }
     
-    public var execute: (Category) throws -> Void
+    public var execute: (Domain.Category) throws -> Void
 }
 
 extension DeleteCategoryUseCaseDependency: DependencyKey {

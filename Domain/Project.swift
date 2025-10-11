@@ -13,6 +13,7 @@ let project = Project(
             resources: [],
             dependencies: [
                 .project(target: "Shared", path: "../Shared"),
+                .project(target: "CoreTCA", path: "../Core/CoreTCA"),
             ]
         ),
         .target(
