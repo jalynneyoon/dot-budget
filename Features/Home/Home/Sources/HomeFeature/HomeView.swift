@@ -11,14 +11,9 @@ public struct HomeView: View {
         self.store = store
     }
 
-    public init() {
-        self.store = Store(initialState: HomeReducer.State()) {
-            HomeReducer()
-        }
-    }
-
     public var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
+            
             ZStack(alignment: .bottomTrailing) {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
@@ -99,7 +94,9 @@ public struct HomeView: View {
             Expense(id: UUID(), date: Date().addingTimeInterval(-86400*20), amount: 25000, category: mockCategoryRepo.categories[0], memo: "Mock Expense 1", dayKey: 0, monthKey: 0, createdAt: .now, updatedAt: .now),
             Expense(id: UUID(), date: Date().addingTimeInterval(-86400*60), amount: 10000, category: mockCategoryRepo.categories[1], memo: "Mock Expense 2", dayKey: 0, monthKey: 0, createdAt: .now, updatedAt: .now),
             Expense(id: UUID(), date: Date().addingTimeInterval(-86400*1), amount: 3200, category: mockCategoryRepo.categories[0], memo: "Mock Expense 3", dayKey: 0, monthKey: 0, createdAt: .now, updatedAt: .now),
-            Expense(id: UUID(), date: Date(), amount: 300000, category: mockCategoryRepo.categories[0], memo: "Mock Expense 4", dayKey: 0, monthKey: 0, createdAt: .now, updatedAt: .now)
+            Expense(id: UUID(), date: Date(), amount: 300000, category: mockCategoryRepo.categories[0], memo: "Mock Expense 4", dayKey: 0, monthKey: 0, createdAt: .now, updatedAt: .now),
+            Expense(id: UUID(), date: Date(), amount: 200000, category: mockCategoryRepo.categories[0], memo: "Mock Expense 4", dayKey: 0, monthKey: 0, createdAt: .now, updatedAt: .now)
+
 
         ]
     )
@@ -129,7 +126,7 @@ public struct HomeView: View {
             store: Store(
                 initialState: HomeReducer.State(),
                 reducer: {
-                    Reduce<HomeReducer.State, HomeReducer.Action> { _, _ in .none }
+                    HomeReducer()
                 }
             )
         )

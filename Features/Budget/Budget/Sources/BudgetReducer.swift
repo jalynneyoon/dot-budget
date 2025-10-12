@@ -23,6 +23,13 @@ public struct BudgetReducer {
         case budgetsLoaded([Domain.Budget])
         case categoriesLoaded([Domain.Category])
         case setBudget(category: Domain.Category, amount: String)
+        
+        case delegate(Delegate)
+        
+        public enum Delegate: Equatable {
+            case budgetSaved
+            case cancelTapped
+        }
     }
 
     @Dependency(\.getBudgetsUseCase) var getBudgetsUseCase
@@ -59,7 +66,11 @@ public struct BudgetReducer {
                     let budgets = try getBudgetsUseCase.execute(budget.monthKey)
                     await send(.budgetsLoaded(budgets))
                 }
+                
+            case .delegate:
+                return .none
             }
+            
         }
     }
 }

@@ -1,7 +1,8 @@
 
 import SwiftUI
-import ComposableArchitecture
 import Domain
+import Shared
+import CoreTCA
 
 public struct BudgetView: View {
     public init(store: StoreOf<BudgetReducer>) {
@@ -17,14 +18,14 @@ public struct BudgetView: View {
                     HStack {
                         Text(category.name)
                         Spacer()
-                        TextField("Budget", text: .init(get: { 
+                        TextField("예산을 입력해 주세요", text: .init(get: {
                             store.state.budgets.first(where: { $0.category == category })?.amount.description ?? ""
                         }, set: { amount in
                             store.send(.setBudget(category: category, amount: amount))
                         }))
                         .keyboardType(.numberPad)
                         .textFieldStyle(.roundedBorder)
-                        .frame(width: 100)
+                        .frame(width: 200)
                     }
                 }
             }
@@ -34,4 +35,16 @@ public struct BudgetView: View {
             }
         }
     }
+}
+
+#Preview {
+    BudgetView(
+        store: Store(
+            initialState: BudgetReducer.State(
+                monthKey: DateKeys.monthKey(from: Date(), calendar: Calendar.current)
+            )
+        ) {
+            BudgetReducer()
+        }
+    )
 }

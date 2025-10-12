@@ -6,6 +6,8 @@ import CoreTCA
 
 @Reducer
 public struct HomeReducer {
+    public init() {}
+    
     @ObservableState
     public struct State: Equatable {
         @Presents var addExpense: AddExpenseReducer.State?
@@ -26,6 +28,13 @@ public struct HomeReducer {
     }
 
     public var body: some ReducerOf<Self> {
+        Scope(state: \.summaryCard, action: \.summaryCard) {
+            SummaryCardReducer()
+        }
+        Scope(state: \.heatmap, action: \.heatmap) {
+            HeatmapReducer()
+        }
+        
         Reduce<HomeReducer.State, HomeReducer.Action> { state, action in
             switch action {
             case .fabButtonTapped:
@@ -47,9 +56,6 @@ public struct HomeReducer {
                 state.addExpense = nil
                 return .none
 
-//            case .budget(.presented(.delegate(.cancelTapped))):
-//                state.budget = nil
-//                return .none
 
             case .addExpense, .budget, .summaryCard, .heatmap:
                 return .none
@@ -61,11 +67,6 @@ public struct HomeReducer {
         .ifLet(\.$budget, action: \.budget) {
             BudgetReducer()
         }
-        Scope(state: \.summaryCard, action: \.summaryCard) {
-            SummaryCardReducer()
-        }
-        Scope(state: \.heatmap, action: \.heatmap) {
-            HeatmapReducer()
-        }
+
     }
 }

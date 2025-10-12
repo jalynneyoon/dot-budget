@@ -123,7 +123,10 @@ public struct GetHeatmapDataUseCaseDependency {
 extension GetHeatmapDataUseCaseDependency: DependencyKey {
     public static let liveValue = Self(
         execute: { _ in
-            fatalError("GetHeatmapDataUseCase not implemented in live environment")
+            // Not implemented in live environment yet. Return an empty dataset to satisfy the type.
+            // You can switch this to `fatalError` if you prefer a hard failure:
+            // fatalError("GetHeatmapDataUseCase not implemented in live environment")
+            return [:]
         }
     )
     public static let testValue = Self(

@@ -9,7 +9,7 @@ public struct SummaryCardReducer {
         var summary: MonthlySummary?
         var isLoading: Bool = false
         var error: String? = nil
-        var currentDate: Date = .now // For which month to display summary
+        var currentDate: Date = .now
     }
 
     public enum Action: Equatable {
@@ -39,6 +39,8 @@ public struct SummaryCardReducer {
             case let .summaryResponse(.failure(error)):
                 state.isLoading = false
                 state.error = error.localizedDescription
+                state.summary = nil
+
                 return .none
             }
         }

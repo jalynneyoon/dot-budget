@@ -19,13 +19,17 @@ struct SummaryCardView: View {
                     .font(.headline)
                 
                 Divider()
+                    .padding(.vertical, 4)
                 
                 ForEach(summary.categorySummaries, id: \.category.id) { categorySummary in
-                    HStack {
-                        Text(categorySummary.category.name)
-                        Spacer()
-                        Text("\(categorySummary.spentAmount) / \(categorySummary.budgetAmount)원")
-                        Text("(\(categorySummary.remainingAmount)원 남음)")
+                    VStack(alignment: .trailing) {
+                        HStack {
+                            Text(categorySummary.category.name)
+                            Spacer()
+                            Text("\(categorySummary.spentAmount) / ₩\(categorySummary.budgetAmount)")
+                        }
+                        
+                        Text("(₩\(categorySummary.remaingAmount) 남음)")
                             .font(.caption)
                             .foregroundColor(categorySummary.remainingAmount < 0 ? .red : .green)
                     }
